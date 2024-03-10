@@ -27,4 +27,4 @@ export interface Stats {
     error?: any;
 }
 
-export type download = (source: string, saveTo?: string, config?: Config) => Promise<Stats>;
+export declare function download(source: string, saveTo?: string, config?: Config): Promise<Stats>;
