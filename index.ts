@@ -24,13 +24,6 @@ export interface TreeItem {
     url: string;
 }
 
-export interface Stats {
-    files: Record<string, string>;
-    downloaded: number;
-    success: boolean;
-    error?: any;
-}
-
 const streamPipeline = promisify(require('stream').pipeline);
 
 // Matches '/<re/po>/tree/<ref>/<dir>'
@@ -146,16 +139,12 @@ const parseUrl = (source: string, muteLog?: boolean) => {
 }
 
 
-export default async function download(source: string, saveTo: string, config?: Config): Promise<Stats> {
-
-    const stats: Stats = { files: {}, downloaded: 0, success: false };
-
+export default async function download(source: string, saveTo: string, excludedFiles?: string[], config?: Config): Promise<void> {
     const [user, repository, ref, dir] = parseUrl(source);
 
     if (!user || !repository) {
         if (!config?.muteLog) console.error('Invalid url. It must match: ', urlParserRegex);
-        stats.error = 'Invalid url';
-        return stats;
+        return;
     }
 
     if (!saveTo) {
@@ -176,9 +165,7 @@ export default async function download(source: string, saveTo: string, config?: 
             meta = await getRepoMeta(user, repository, ref, dir, config)
         } catch (e) {
             if (!config?.muteLog) console.error('Failed to fetch repo meta info after second attempt: ', e);
-
-            stats.error = e;
-            return stats;
+            return;
         }
     }
 
@@ -186,8 +173,7 @@ export default async function download(source: string, saveTo: string, config?: 
 
     if (files.length === 0) {
         if (!config?.muteLog) console.log('No files to download');
-        stats.success = true;
-        return stats;
+        return;
     }
 
     if (!config?.muteLog) console.log(`Downloading ${files.length} files…`);
@@ -214,6 +200,11 @@ export default async function download(source: string, saveTo: string, config?: 
 
     const download = async (file: TreeItem) => {
         let response;
+        const parts = file.path.split('/');
+        if (excludedFiles?.includes(parts[parts.length - 1])) {
+            return;
+        }
+
         try {
             response = await fetchFile(file);
         } catch (e) {
@@ -242,9 +233,6 @@ export default async function download(source: string, saveTo: string, config?: 
                 }
             }
             await streamPipeline(response.body, fs.createWriteStream(fileName));
-
-            stats.files[file.path] = fileName;
-
         } catch (e) {
             if (!config?.muteLog) console.error('Failed to write file: ' + file.path, e);
         }
@@ -261,12 +249,5 @@ export default async function download(source: string, saveTo: string, config?: 
 
     await Promise.all(statuses);
 
-
     if (!config?.muteLog) console.log(`Downloaded ${downloaded}/${files.length} files`);
-
-    stats.downloaded = downloaded;
-
-    if (files.length === downloaded) stats.success = true;
-
-    return stats;
 }
