@@ -1,4 +1,4 @@
-export type Config = {
+export interface Config {
     /** GitHub token for authorization in private repositories */
     token?: string;
 
@@ -11,7 +11,7 @@ export type Config = {
     muteLog?: boolean;
 }
 
-export type TreeItem = {
+export interface TreeItem {
     path: string;
     mode: string;
     type: string;
@@ -20,7 +20,7 @@ export type TreeItem = {
     url: string;
 }
 
-export type Stats = {
+export interface Stats {
     files: Record<string, string>;
     downloaded: number;
     success: boolean;

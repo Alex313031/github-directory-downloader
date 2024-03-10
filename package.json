@@ -2,50 +2,23 @@
   "name": "github-directory-downloader",
   "version": "1.3.6",
   "description": "Download just a sub directory from a GitHub repo",
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "esm",
-  "types": "es/index.d.ts",
-  "files": [
-    "dist",
-    "esm",
-    "bin"
-  ],
+  "types": "types.d.ts",
   "homepage": "https://github.com/eilrix/github-directory-downloader",
   "repository": {
     "type": "git",
     "url": "https://github.com/eilrix/github-directory-downloader.git"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register tests/**/*.test.ts --timeout 100000",
-    "build": "npx rollup -c"
+    "test": "tsx tests/index.test.ts"
   },
   "author": "eilrix",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-typescript": "^8.1.0",
-    "@types/chai": "^4.2.14",
-    "@types/fs-extra": "^9.0.6",
-    "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.17",
-    "@types/node-fetch": "^2.5.7",
-    "@types/yargs-parser": "^20.2.0",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "npm": "^6.14.10",
-    "nyc": "^15.1.0",
-    "rollup-plugin-auto-external": "^2.0.0",
-    "ts-node": "^9.1.1",
-    "tslib": "^2.0.3",
-    "typescript": "^4.1.3"
-  },
-  "dependencies": {
-    "fs-extra": "^9.0.1",
-    "node-fetch": "^2.6.1",
-    "yargs-parser": "^20.2.4"
-  },
-  "bin": {
-    "github-directory-downloader": "./bin/cli.js"
+    "@types/node": "^20.11.25",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
   },
   "bugs": {
     "url": "https://github.com/eilrix/github-directory-downloader/issues"

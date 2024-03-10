@@ -1,5 +1,4 @@
-import fs from 'fs-extra';
-import fetch from 'node-fetch';
+import * as fs from 'fs';
 import { dirname, isAbsolute, resolve } from 'path';
 import { promisify } from 'util';
 
@@ -208,7 +207,13 @@ export default async function download(source: string, saveTo: string, config?: 
 
             const fileName = resolve(saveTo, file.path.replace(dir + '/', ''));
 
-            await fs.ensureDir(dirname(fileName));
+            try {
+                await fs.promises.mkdir(dirname(fileName), { recursive: true });
+            } catch (err: any) {
+                if (err.code !== 'EEXIST') {
+                    throw err;
+                }
+            }
             await streamPipeline(response.body, fs.createWriteStream(fileName));
 
             stats.files[file.path] = fileName;
@@ -223,9 +228,7 @@ export default async function download(source: string, saveTo: string, config?: 
 
     for (let i = 0; i < files.length; i++) {
         const num = i % requests;
-        if (statuses[num]) {
-            await statuses[num];
-        }
+        await statuses[num];
         statuses[num] = download(files[i]);
     }
 
