@@ -26,3 +26,5 @@ export interface Stats {
     success: boolean;
     error?: any;
 }
+
+export type download = (source: string, saveTo?: string, config?: Config) => Promise<Stats>;
