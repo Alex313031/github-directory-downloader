@@ -1,3 +1,5 @@
+A 0-dependency fork of github-directory-downloader also adding an exluded files option
+
 # github-directory-downloader
 
 Download just a sub directory from a GitHub repo
@@ -8,26 +10,23 @@ Recursively (with subdirectories) downloads files only from specified directory 
  
 
 ```sh
-npm i github-directory-downloader
+npm i git+https://github.com/Milkshiift/github-directory-downloader.git
 ```
 
 ## Usage
 
-#### CLI
-```sh
-github-directory-downloader https://github.com/mrdoob/three.js/tree/dev/docs/manual --dir=temp --token=******
-```
 #### Programmatic
 
 ```typescript
 import download from 'github-directory-downloader';
 import { resolve } from 'path';
 
-// Will download content inside docs/manual into "../temp" 
-// and return statistics for downloaded files
-const stats = await download(
+// Will download content inside docs/manual into "../temp"
+// excluding all files named "Color-management.html"
+await download(
     'https://github.com/mrdoob/three.js/tree/dev/docs/manual',
-    resolve(__dirname, '../temp')
+    resolve(__dirname, '../temp'),
+    ["Color-management.html"] // Optional: Excluded files
 );
 ```
 
