@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { dirname, isAbsolute, resolve } from 'path';
 import { promisify } from 'util';
+import fetch from 'cross-fetch';
 
 export interface Config {
     /** GitHub token for authorization in private repositories */

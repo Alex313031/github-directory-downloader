@@ -5,23 +5,34 @@
   "main": "index.js",
   "module": "esm",
   "types": "types.d.ts",
-  "homepage": "https://github.com/eilrix/github-directory-downloader",
+  "homepage": "https://github.com/Alex313031/github-directory-downloader#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eilrix/github-directory-downloader.git"
+    "url": "https://github.com/Alex313031/github-directory-downloader.git"
   },
   "scripts": {
-    "test": "tsx tests/index.test.ts"
+    "test": "tsx tests/index.test.ts",
+    "start": "npm run build",
+    "build": "tsc ./index.ts",
+    "clean": "rimraf ./node_modules",
+    "burn": "rimraf ./package-lock.json && rimraf ./node_modules"
   },
-  "author": "eilrix",
+  "author": "Alex313031",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.11.25",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.2"
+    "@types/node": "16.18.97",
+    "rimraf": "3.0.2",
+    "tsx": "3.14.0",
+    "typescript": "5.4.5"
+  },
+  "dependencies": {
+    "cross-fetch": "3.1.8"
   },
   "bugs": {
-    "url": "https://github.com/eilrix/github-directory-downloader/issues"
+    "url": "https://github.com/Alex313031/github-directory-downloader/issues"
+  },
+  "engines": {
+    "node": ">=16.17.1"
   },
   "keywords": [
     "github",
